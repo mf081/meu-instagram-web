@@ -13,9 +13,9 @@
     "ts-node": "^10.9.2",
     "vite": "^5.4.3"
   },
-  "description": "",
   "dependencies": {
     "@faker-js/faker": "^8.4.1",
     "uuid": "^10.0.0"
-  }
+  },
+  "description": ""
 }
