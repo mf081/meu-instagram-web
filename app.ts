@@ -30,13 +30,60 @@ class Post {
   like() {
     this._isLiked = !this._isLiked;
 
-    // Incrementa o número de likes
+    // Incrementa ou decrementa o número de likes
     if (this._isLiked) {
       this._numberOfLikes += 1;
     } else {
-      // Descrementa o número de likes
       this._numberOfLikes -= 1;
     }
+
+    // Atualiza a visualização do número de likes
+    this.updateLikesDisplay();
+  }
+
+  private updateLikesDisplay() {
+    const icon = document.getElementById(`heart-icon-${this._id}`);
+    if (icon) {
+      icon.classList.toggle("bi-heart-fill", this._isLiked);
+      icon.classList.toggle("bi-heart", !this._isLiked);
+      icon.classList.toggle("liked", this._isLiked);
+    }
+  }
+
+  toHTML() {
+    const postContainer = document.createElement("div");
+    postContainer.className = "post-container";
+
+    postContainer.innerHTML = `
+      <div class="post-header">
+        <div>
+          <img title="Avatar image" src="${this._avatarUrl}">
+        </div>
+        <span>${this._userName}</span>
+      </div>
+      <div class="post-image">
+        <img title="Post Image" src="${this._imageUrl}">
+      </div>
+      <div class="post-icons">
+        <div id="btn-like-${this._id}">
+          <i id="heart-icon-${this._id}" class="fa ${this._isLiked ? 'fa-heart' : 'fa-heart-o'}"></i>
+        </div>
+        <div>
+          <i class="fa fa-comment-o"></i>
+        </div>
+        <div>
+          <i class="fa fa-paper-plane-o"></i>
+        </div>            
+        <div>
+          <i class="fa fa-bookmark-o"></i>
+        </div>
+      </div>
+    `;
+
+    const btnLike = postContainer.querySelector(`#btn-like-${this._id}`);
+    btnLike?.addEventListener("click", () => this.like());
+
+    document.body.appendChild(postContainer);
   }
 }
 
@@ -49,7 +96,6 @@ for (let index = 0; index < 15; index++) {
   const description = faker.lorem.paragraph();
 
   const post = new Post(userName, avatarUrl, imageUrl, description);
-
   posts.push(post);
 }
 
@@ -57,54 +103,4 @@ posts[0].like();
 posts[0].like();
 console.log(posts[0]);
 
-console.log("APP.TS INICIADO")
-
-
-// Inicialização da variável isLiked
-let isLiked = false;
-
-function like() {
-
-    // Seleciona o ícone de coração
-    const icon = document.getElementById("heart-icon");
-
-    // Se o ícone não existir, retorna
-    if (!icon) return;
-
-    // Atualiza as classes do ícone com base no estado de isLiked
-    if (isLiked) {
-        icon.classList.remove("bi-heart-fill");
-        icon.classList.add("bi-heart");
-        icon.classList.remove("liked");
-    } else {
-        icon.classList.remove("bi-heart");
-        icon.classList.add("bi-heart-fill");
-        icon.classList.add("liked");
-    }
-
-    isLiked = !isLiked;
-}
-
-
-// function exibirTextoNaTela(id, texto) {
-//     let campo = document.getElementById(id);
-//     campo.innerHTML = texto;
-// }
-// function exibirMensagemInicial() {
-//     exibirTextoNaTela("descricaoSpan'", "Lorem ipsum dolor sit amet consectetur adipisicing elit.!");
-// }
-
-toHTML(){
-    const div = document.createElement("div");
-    div.innerHTML =
-     `<div class="post-container">
-        <div class="post-header">
-            <div></div>
-            <span>${this.userName}</span>
-            </div>
-        </div>
-      </div>`;
-    document.body.appendChild(div);
-    
-}
-
+console.log("APP.TS INICIADO");
