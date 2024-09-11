@@ -41,55 +41,12 @@
 
   <main>
     <!-- Contêiner principal do post -->
-    <div class="post-container">
-
-      <!-- Cabeçalho do post -->
-      <div class="post-header">
-        <!-- Espaço reservado para possível futura adição, como uma imagem de perfil -->
-        <div></div>
-        <!-- Nome do usuário -->
-        <span>username</span>
-      </div>
-
-      <!-- Imagem do post -->
-      <div class="post-image">
-        <img title="post-image" src="/img/instagram-6338393_1280.png" alt="Post Image">
-      </div>
-
-      <!-- Ícones de interação com o post -->
-      <div class="post-icons">
-        <div>
-          <!-- Ícone de curtida (não preenchido) -->
-           
-          <i id="heart-icon" onclick="like()" class="bi bi-heart"></i>
-          <!-- Ícone de comentário -->
-          <i class="bi bi-chat"></i>
-          <!-- Ícone de compartilhamento -->
-          <i class="bi bi-send"></i>
-
-        </div>
-        <!-- Ícone de marcador (não preenchido) -->
-        <i class="fa fa-bookmark-o"></i>
-      </div>
-
-      <!-- Seção de curtidas do post -->
-      <div class="post-likes">
-        <!-- Ícone de curtida (preenchido) -->
-        <i class="fa fa-heart"></i>
-        <!-- Texto exibindo o número de curtidas -->
-        100 likes
-      </div>
-
-      <!-- Descrição do post -->
-      <div class="post-description">
-        Descrição
-
-      </div>
-
+    <div id="container-position">
+      <!-- posts adicionados dinamicamente -->
     </div>
   </main>
 
-  <!-- Inclusão de um arquivo JavaScript local -->
+  <!-- Inclusão do arquivo JavaScript local -->
   <script type="module" src="/app.ts"></script>
 </body>
 
