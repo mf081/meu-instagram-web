@@ -64,10 +64,10 @@ class Post {
     postIcons.innerHTML = `
       <div>
         <div id="btn-like-${this._id}">
-          <i class="heart fa fa-heart-o"></i>
+          <i class="bi bi-heart"></i>
         </div>
         <div>
-          <i class="fa fa-comment-o"></i>
+          <i class="bi bi-chat"></i>
         </div>
         <div>
           <i class="fa fa-send-o"></i>
@@ -80,7 +80,7 @@ class Post {
 
     const postLike = document.createElement("div");
     postLike.className = "post-likes";
-    postLike.innerHTML = `<i class="fa fa-heart"></i>
+    postLike.innerHTML = `<i class="bi bi-heart-fill"></i>
       <span id="like-count-${this._id}">0</span> likes`;
 
     const postDescription = document.createElement("div");
@@ -137,19 +137,14 @@ class Post {
     const commentButton = document.getElementById(`comment-submit-${this._id}`);
 
     if (commentInput && commentButton) {
-      // Adicione um evento de input para o textarea
       commentInput.addEventListener("input", () => {
-        // Verifique o valor do textarea
         if (commentInput.value.trim() === "") {
-          // Esconda o botão se o textarea estiver vazio
           commentButton.classList.add("hidden");
         } else {
-          // Mostre o botão se o textarea contiver algum texto
           commentButton.classList.remove("hidden");
         }
       });
 
-      // Adicione o evento de clique no botão de postagem
       commentButton.addEventListener("click", () => this.addComment());
     }
     return postContainer;
@@ -161,10 +156,10 @@ class Post {
     let likeCountElement = document.getElementById(`like-count-${this._id}`);
     if (!icon || !likeCountElement) return;
   
-  icon.classList.toggle("fa-heart");
+  icon.classList.toggle("bi-heart-fill");
   icon.classList.toggle("liked");
-  icon.classList.toggle("fa-heart-o");
-
+  icon.classList.toggle("bi-heart");
+  
   this._numberOfLikes += this._isLiked ? -1 : 1;
   likeCountElement.innerText = this._numberOfLikes.toString();
   this._isLiked = !this._isLiked;
@@ -174,16 +169,14 @@ class Post {
     icon.classList.remove("pulse");
   }, 600);
 }
-  
 
   save() {
     const button = document.getElementById(`btn-save-${this._id}`);
     const icon = button?.querySelector("i");
     if (!icon) return;
 
-    icon.classList.toggle("fa-bookmark");
-    icon.classList.toggle("saved");
     icon.classList.toggle("fa-bookmark-o");
+    icon.classList.toggle("fa-bookmark");
 
     this._isSaved = !this._isSaved;
   }
@@ -206,15 +199,12 @@ class Post {
 
     const commentText = commentInput.value.trim();
     if (commentText) {
-      // Cria um novo elemento de comentário
       const commentElement = document.createElement("div");
       commentElement.className = "comment";
       commentElement.innerText = commentText;
 
-      // Adiciona o comentário à lista de comentários
       commentsList.appendChild(commentElement);
 
-      // Limpa o campo de entrada de comentário
       commentInput.value = "";
     }
   }
