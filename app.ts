@@ -1,225 +1,135 @@
+import { v4 as randomUUID } from "uuid";
 import { faker } from "@faker-js/faker";
-import { v4 as randomUUID } from "uuid"; // npm i --save-dev @types/uuid
 
 class Post {
+  private _id: string = randomUUID();
   private _userName: string;
+  private _avatarUrl: string;
+  private _imageUrl: string;
+  private _isLiked: boolean = false;
   private _description: string;
   private _createdAt: Date = new Date();
   private _numberOfLikes: number = 0;
-  private _hashtag: string;
-  private _id: string = randomUUID();
-  private _isLiked: boolean = false;
-  private _isFollowed: boolean = false;
-  private _isSaved: boolean = false;
-  private _avatarUrl: string;
-  private _imageUrl: string;
 
   constructor(
     userName: string,
     avatarUrl: string,
     imageUrl: string,
-    description: string,
-    hashtag: string
+    description: string
   ) {
-    this._userName = userName;
-    this._description = description;
+    this._userName = userName.toLowerCase();
     this._avatarUrl = avatarUrl;
     this._imageUrl = imageUrl;
-    this._hashtag = hashtag;
-  }
-
-  render() {
-    const postContainer = document.createElement("div");
-    postContainer.className = "post-container";
-
-    const postHeader = document.createElement("div");
-    postHeader.className = "post-header";
-    postHeader.innerHTML = `
-      <div class="avatar-user">
-        <div class="avatar">
-          <img
-            src="${this._avatarUrl}"
-            alt=""
-            srcset=""
-          />
-        </div>
-        <span>${this._userName}</span>
-      </div>
-      <div id="btn-follow-${this._id}" class="follow-options">
-        <div class="follow">Follow</div>
-        <div>...</div>
-      </div>
-    `;
-
-    const postImage = document.createElement("div");
-    postImage.className = "post-image";
-    postImage.innerHTML = `<img
-      src="${this._imageUrl}"
-      alt="${this._description}"
-      srcset=""
-    />`;
-
-    const postIcons = document.createElement("div");
-    postIcons.className = "post-icons";
-    postIcons.innerHTML = `
-      <div>
-        <div id="btn-like-${this._id}">
-          <i class="bi bi-heart"></i>
-        </div>
-        <div>
-          <i class="bi bi-chat"></i>
-        </div>
-        <div>
-          <i class="fa fa-send-o"></i>
-        </div>
-      </div>
-      <div id="btn-save-${this._id}">
-        <i class="fa fa-bookmark-o"></i>
-      </div>
-    `;
-
-    const postLike = document.createElement("div");
-    postLike.className = "post-likes";
-    postLike.innerHTML = `<i class="bi bi-heart-fill"></i>
-      <span id="like-count-${this._id}">0</span> likes`;
-
-    const postDescription = document.createElement("div");
-    postDescription.className = "post-description";
-    postDescription.innerHTML = `
-      <div class="user_name">${this._userName}</div>
-      <div class="description">
-        ${this._description} <span class="hash-tag">#${this._hashtag}</span>
-      </div>
-    `;
-
-    const postComments = document.createElement("div");
-    postComments.className = "post-comments";
-    postComments.innerHTML = `
-              <div class="comments-list" id="comments-list-${this._id}"></div>
-                <div class="comment-input">
-                  <textarea id="comment-input-${this._id}" placeholder="Add a comment..." rows="3"></textarea>
-                  <div class="post-comment hidden" id="comment-submit-${this._id}">Post</div>
-                </div>
-            `;
-
-    postContainer.append(
-      postHeader,
-      postImage,
-      postIcons,
-      postLike,
-      postDescription,
-      postComments
-    );
-
-    const mainContainer = document.getElementById("container-position");
-    if (mainContainer) {
-      mainContainer.appendChild(postContainer);
-    }
-
-    const likeButton = document.querySelector(`#btn-like-${this._id}`);
-    if (likeButton) {
-      likeButton.addEventListener("click", () => this.like());
-    }
-
-    const saveButton = document.querySelector(`#btn-save-${this._id}`);
-    if (saveButton) {
-      saveButton.addEventListener("click", () => this.save());
-    }
-
-    const followButton = document.querySelector(`#btn-follow-${this._id}`);
-    if (followButton) {
-      followButton.addEventListener("click", () => this.follow());
-    }
-
-    const commentInput = document.getElementById(
-      `comment-input-${this._id}`
-    ) as HTMLTextAreaElement;
-    const commentButton = document.getElementById(`comment-submit-${this._id}`);
-
-    if (commentInput && commentButton) {
-      commentInput.addEventListener("input", () => {
-        if (commentInput.value.trim() === "") {
-          commentButton.classList.add("hidden");
-        } else {
-          commentButton.classList.remove("hidden");
-        }
-      });
-
-      commentButton.addEventListener("click", () => this.addComment());
-    }
-    return postContainer;
+    this._description = description;
   }
 
   like() {
-    const button = document.getElementById(`btn-like-${this._id}`);
-    const icon = button?.querySelector("i");
-    let likeCountElement = document.getElementById(`like-count-${this._id}`);
-    if (!icon || !likeCountElement) return;
-  
-  icon.classList.toggle("bi-heart-fill");
-  icon.classList.toggle("liked");
-  icon.classList.toggle("bi-heart");
-  
-  this._numberOfLikes += this._isLiked ? -1 : 1;
-  likeCountElement.innerText = this._numberOfLikes.toString();
-  this._isLiked = !this._isLiked;
+    const postContainer = document.getElementById(this._id);
 
-  icon.classList.add("pulse");
-  setTimeout(() => {
-    icon.classList.remove("pulse");
-  }, 600);
-}
+    if (!postContainer) return;
 
-  save() {
-    const button = document.getElementById(`btn-save-${this._id}`);
-    const icon = button?.querySelector("i");
-    if (!icon) return;
+    this.updateLikeIcon(postContainer);
+    this.updateTextNumberOfLikes(postContainer);
 
-    icon.classList.toggle("fa-bookmark-o");
-    icon.classList.toggle("fa-bookmark");
-
-    this._isSaved = !this._isSaved;
+    this._isLiked = !this._isLiked;
   }
 
-  follow() {
-    const button = document.querySelector(`#btn-follow-${this._id}`);
-    const icon = button?.querySelector("div");
+  private updateLikeIcon(postHTML: HTMLElement) {
+    const btnLike = postHTML.querySelector("#btn-like");
+    const icon = btnLike?.children[0];
+
     if (!icon) return;
 
-    icon.classList.toggle("followed-style");
-    icon.innerHTML = this._isFollowed ? "Follow" : "Following";
-
-    this._isFollowed = !this._isFollowed;
+    icon.classList.toggle("fa-heart");
+    icon.classList.toggle("liked");
+    icon.classList.toggle("fa-heart-o");
   }
 
-  addComment() {
-    const commentInput = document.getElementById(`comment-input-${this._id}`) as HTMLInputElement;
-    const commentsList = document.getElementById(`comments-list-${this._id}`);
-    if (!commentInput || !commentsList) return;
+  private updateTextNumberOfLikes(postHTML: HTMLElement) {
+    const postLikes = postHTML.querySelector(".post-likes");
+    const span = postLikes?.querySelector("span");
 
-    const commentText = commentInput.value.trim();
-    if (commentText) {
-      const commentElement = document.createElement("div");
-      commentElement.className = "comment";
-      commentElement.innerText = commentText;
+    if (!span) return;
 
-      commentsList.appendChild(commentElement);
-
-      commentInput.value = "";
+    if (this._isLiked) {
+      this._numberOfLikes -= 1;
+    } else {
+      this._numberOfLikes += 1;
     }
+
+    span.textContent = this._numberOfLikes.toString();
+  }
+
+  toHTML() {
+    const postContainer = document.createElement("div");
+    postContainer.className = "post-container";
+    postContainer.id = this._id;
+
+    const postHeader = `
+      <div class="post-header">
+        <div>
+          <img title="Avatar image"
+            src=${this._avatarUrl}>
+        </div>
+        <span>${this._userName}</span>
+      </div>
+    `;
+
+    const postImage = `
+     <div class="post-image">
+        <img title="Post image"
+          src=${this._imageUrl}>
+      </div>
+    `;
+
+    const postIcons = `
+      <div class="post-icons">
+        <div>
+          <div id="btn-like" class="btn">
+            <i class="fa fa-heart-o"></i>
+          </div>
+
+          <div class="btn">
+            <i class="fa fa-comment-o"></i>
+          </div>
+
+          <div class="btn">
+            <i class="fa fa-paper-plane-o"></i>
+          </div>
+        </div>
+
+        <div class="btn">
+          <i class="fa fa-bookmark-o"></i>
+        </div>
+      </div>
+    `;
+
+    const postLikes = `
+      <div class="post-likes">
+        <i class="fa fa-heart"></i>
+        <div><span>${this._numberOfLikes}</span> likes</div>
+      </div>
+    `;
+
+    postContainer.innerHTML = postHeader;
+    postContainer.innerHTML += postImage;
+    postContainer.innerHTML += postIcons;
+    postContainer.innerHTML += postLikes;
+
+    const btnLike = postContainer.querySelector("#btn-like");
+    btnLike?.addEventListener("click", () => this.like());
+
+    document.body.appendChild(postContainer);
   }
 }
 
-const posts: Post[] = [];
-
-for (let i = 1; i <= 15; i++) {
+for (let index = 0; index < 15; index++) {
   const userName = faker.person.firstName();
-  const avatarURL = faker.image.avatar();
+  const avatarUrl = faker.image.avatarGitHub();
   const imageUrl = faker.image.urlLoremFlickr();
-  const description = faker.lorem.sentences(2);
-  const hashtagWord = faker.lorem.word();
+  const description = faker.lorem.paragraph();
 
-  const post = new Post(userName, avatarURL, imageUrl, description, hashtagWord);
-  post.render();
-  posts.push(post);
+  const post = new Post(userName, avatarUrl, imageUrl, description);
+
+  post.toHTML();
 }

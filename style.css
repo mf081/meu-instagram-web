@@ -1,0 +1,173 @@
+/* Reset de estilos globais */
+
+
+/* Global styling */
+body {
+  font-family: "Roboto", sans-serif;
+  margin: 0;
+  padding: 0;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Header styling original */
+header {
+  border: 1px solid rgb(25, 7, 7);
+  padding: 10px;
+  box-sizing: border-box;
+  border-left: none;
+  border-right: none;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Layout do site no header */
+.header-site {
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
+  max-width: 1200px;
+  margin: 0 auto;
+  align-items: center;
+}
+
+/* Imagem do logo */
+.header-site img {
+  width: auto;
+  height: 40px;
+}
+
+/* Input de pesquisa */
+.header-input {
+  display: flex;
+  justify-content: center;
+}
+
+.header-site input {
+  text-align: center;
+  width: 200px;
+  align-self: center;
+  padding: 5px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+/* Ícones no header */
+.header-icons {
+  font-size: 28px;
+  display: flex;
+  gap: 15px;
+  justify-content: flex-end;
+}
+
+/* Container do post */
+.post-container {
+  width: 400px;
+  margin: 20px auto;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background-color: white;
+  box-shadow: 10px 10px 29px 0px rgba(0, 0, 0, 0.3);
+  position: relative;
+}
+
+/* Header do post */
+.post-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-bottom: 10px; /* Espaçamento inferior no header */
+}
+
+.post-header img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Estilo do avatar no header */
+.post-header>div {
+  width: 40px;
+  height: 40px;
+  border: 1px solid black;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+/* Imagem do post */
+.post-image {
+  border: 1px solid black;
+  flex: 1;
+  overflow: hidden; /* Garante que a imagem será cortada conforme o container */
+}
+
+.post-image img {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Ícones do post */
+.post-icons {
+  font-size: 28px;
+  display: flex;
+  justify-content: space-between;
+}
+
+/* Cada ícone */
+.post-icons > div {
+  display: flex;
+  gap: 10px;
+}
+
+/* Likes */
+.post-likes {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 14px;
+  margin-top: 5px;
+}
+
+/* Descrição do post */
+.post-description {
+  font-size: 14px;
+  margin-top: 10px;
+}
+
+.post-description .user_name {
+  font-weight: bold;
+}
+
+.post-description .hash-tag {
+  color: #007bff; /* Cor azul para hashtag */
+}
+
+/* Estilo para quando o post está curtido */
+.liked {
+  color: red;
+  cursor: pointer;
+  animation: pulse 0.4s;
+}
+
+/* Botão genérico */
+.btn {
+  cursor: pointer;
+}
+
+/* Animação de pulsação ao curtir */
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.2);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
