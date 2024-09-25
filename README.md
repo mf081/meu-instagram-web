@@ -44,7 +44,7 @@ $ cd instagram-clone
 $ npm install
 
 # Execute o projeto
-$ npm run dev
+$ npx vite
 ```
 By Mateus Fernando
 
