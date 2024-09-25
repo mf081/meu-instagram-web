@@ -35,10 +35,10 @@ Para clonar e executar este projeto localmente, você precisará ter o **Git** e
 
 ```bash
 # Clone o repositório
-$ git clone https://github.com/seu-usuario/instagram-clone.git
-
+$ git clone https://github.com/mf081/meu-instagram-web.git
+ 
 # Entre no diretório do projeto
-$ cd instagram-clone
+$ cd (diretorio do projeto)
 
 # Instale as dependências
 $ npm install
